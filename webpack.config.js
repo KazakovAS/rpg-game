@@ -2,13 +2,13 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV,
   entry: path.resolve(__dirname, 'src/index.js'),
   output: {
     filename: 'main.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  watch: true,
+  watch: process.env.NODE_ENV === 'development',
   watchOptions: {
     ignored: /node_modules/,
     poll: 1000,
@@ -20,6 +20,7 @@ module.exports = {
     hot: true,
     historyApiFallback: true,
   },
+  devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
   module: {
     rules: [
       {
