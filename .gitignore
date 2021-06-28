@@ -1,0 +1,21 @@
+# Default
+.gulp
+.idea
+.vscode
+.DS_Store
+.css
+
+# Node
+node_modules
+
+# Build & test
+test
+build
+dist
+
+# BD
+*.sql
+*.sqlite
+
+# Logs
+*.log
