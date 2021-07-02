@@ -11,11 +11,6 @@
     "dev": "npx webpack server",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-push": "YOUR_COMMAND_HERE"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KazakovAS/rpg-game.git"

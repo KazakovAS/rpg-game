@@ -11,7 +11,6 @@ module.exports = {
     sourceType: 'module',
   },
   rules: {
-    "prettier/prettier": "error",
     "linebreak-style": "off", // Неправильно работает в Windows.
     "arrow-parens": "off", // Несовместимо с prettier
     "object-curly-newline": "off", // Несовместимо с prettier
@@ -23,6 +22,8 @@ module.exports = {
     "space-before-function-paren": 0, // Несовместимо с prettier
     "import/no-unresolved": "off",
     "max-len": ["error", { "ignoreUrls": true }],
-    "operator-linebreak": [2, "before", { "overrides": { "?": "after" } }]
+    "operator-linebreak": [2, "after"],
+    "no-return-assign": 0,
+    "consistent-return": 0,
   },
 };
