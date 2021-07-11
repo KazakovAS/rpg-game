@@ -25,5 +25,13 @@ module.exports = {
     "operator-linebreak": [2, "after"],
     "no-return-assign": 0,
     "consistent-return": 0,
+    'object-shorthand': 'off',
+    'curly': 'off',
+    'func-names': 'off',
+    'no-restricted-syntax': 'off',
+    'guard-for-in': 'off',
+    'prefer-const': 'off',
+    'no-unused-vars': 'off',
+    'nonblock-statement-body-position': 'off',
   },
 };
