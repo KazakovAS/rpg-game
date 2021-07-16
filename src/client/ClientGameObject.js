@@ -8,7 +8,11 @@ class ClientGameObject extends MovableObject {
 
     const world = cfg.cell.world;
     const gameObjs = world.game.gameObjects;
-    const objCfg = { type: cfg.objCfg };
+    const objCfg = typeof cfg.objCfg === 'string' ? { type: cfg.objCfg } : cfg.objCfg;
+
+    if (objCfg.player) {
+      world.game.setPlayer(this);
+    }
 
     Object.assign(
       this,
@@ -29,7 +33,11 @@ class ClientGameObject extends MovableObject {
 
   moveByCellCoord(dcol, drow, conditionCallback = null) {
     const { cell } = this;
-    this.moveToCellCoord(cell.cellCol + dcol, cell.cellRow + drow, conditionCallback);
+    this.moveToCellCoord(
+      cell.cellCol + dcol,
+      cell.cellRow + drow,
+      conditionCallback,
+    );
   }
 
   moveToCellCoord(dcol, drow, conditionCallback = null) {
@@ -60,7 +68,14 @@ class ClientGameObject extends MovableObject {
 
     const spriteFrame = states ? states.main.frames[0] : frame;
 
-    engine.renderSpriteFrame({ sprite, frame: spriteFrame, x, y, w: width, h: height });
+    engine.renderSpriteFrame({
+      sprite,
+      frame: spriteFrame,
+      x,
+      y,
+      w: width,
+      h: height,
+    });
   }
 
   detouch() {
