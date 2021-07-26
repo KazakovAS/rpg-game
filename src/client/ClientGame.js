@@ -22,17 +22,22 @@ class ClientGame {
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId));
+    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
   }
 
   createWorld() {
     return new ClientWorld(this, this.engine, levelCfg);
   }
 
+  getWorld() {
+    return this.map;
+  }
+
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
       this.map.init();
       this.engine.on('render', (_, time) => {
+        this.engine.camera.focusAtGameObject(this.player);
         this.map.render(time);
       });
       this.engine.start();
