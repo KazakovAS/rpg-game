@@ -65,9 +65,13 @@ class ClientGame {
     const { player } = this;
 
     if (player && player.motionProgress === 1) {
-      const canMovie = player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => {
-        return cell.findObjectsByType('grass').length;
-      });
+      const canMovie = player.moveByCellCoord(
+        dirs[dir][0],
+        dirs[dir][1],
+        (cell) => {
+          return cell.findObjectsByType('grass').length;
+        },
+      );
 
       if (canMovie) {
         player.setState(dir);
