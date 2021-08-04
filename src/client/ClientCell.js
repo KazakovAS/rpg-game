@@ -18,9 +18,7 @@ class ClientCell extends PositionedObject {
         height: cellHeight,
         col: cfg.cellCol,
         row: cfg.cellRow,
-        objectClasses: {
-          player: ClientPlayer,
-        },
+        objectClasses: { player: ClientPlayer },
       },
       cfg,
     );
@@ -32,23 +30,20 @@ class ClientCell extends PositionedObject {
     const { cellCfg, objectClasses } = this;
 
     this.objects = cellCfg.map((layer, layerId) =>
-      layer.map(
-        (objCfg) => {
-          let ObjectClass;
+      layer.map((objCfg) => {
+        let ObjectClasses;
 
-          if (objCfg.class) {
-            ObjectClass = objectClasses[objCfg.class];
-          } else {
-            ObjectClass = ClientGameObject;
-          }
-
-          return new ObjectClass({
-            cell: this,
-            objCfg,
-            layerId,
-          });
-        },
-      ),
+        if (objCfg.class) {
+          ObjectClasses = objectClasses[objCfg.class];
+        } else {
+          ObjectClasses = ClientGameObject;
+        }
+        return new ObjectClasses({
+          cell: this,
+          objCfg,
+          layerId,
+        });
+      }),
     );
   }
 
@@ -62,7 +57,6 @@ class ClientCell extends PositionedObject {
 
   addGameObject(objToAdd) {
     const { objects } = this;
-
     if (objToAdd.layerId === undefined) {
       objToAdd.layerId = objects.length;
     }
@@ -76,23 +70,14 @@ class ClientCell extends PositionedObject {
 
   removeGameObject(objToRemove) {
     const { objects } = this;
-    objects.forEach(
-      (layer, layerId) =>
-        (objects[layerId] = layer.filter((obj) => obj !== objToRemove)),
-    );
+    objects.forEach((layer, layerId) => (objects[layerId] = layer.filter((obj) => obj !== objToRemove)));
   }
 
   findObjectsByType(type) {
-    let foundObjects = [];
+    let foundobjects = [];
 
-    this.objects.forEach(
-      (layer) =>
-        (foundObjects = [...foundObjects, ...layer].filter(
-          (obj) => obj.type === type,
-        )),
-    );
-
-    return foundObjects;
+    this.objects.forEach((layer) => (foundobjects = [...foundobjects, ...layer].filter((obj) => obj.type === type)));
+    return foundobjects;
   }
 }
 

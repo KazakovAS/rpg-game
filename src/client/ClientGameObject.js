@@ -7,7 +7,7 @@ class ClientGameObject extends MovableObject {
 
     const { x, y, width, height } = cfg.cell;
 
-    const world = cfg.cell.world;
+    const { world } = cfg.cell;
     const gameObjs = world.game.gameObjects;
     const objCfg = typeof cfg.objCfg === 'string' ? { type: cfg.objCfg } : cfg.objCfg;
 
@@ -32,11 +32,7 @@ class ClientGameObject extends MovableObject {
 
   moveByCellCoord(dcol, drow, conditionCallback = null) {
     const { cell } = this;
-    return this.moveToCellCoord(
-      cell.cellCol + dcol,
-      cell.cellRow + drow,
-      conditionCallback,
-    );
+    return this.moveToCellCoord(cell.cellCol + dcol, cell.cellRow + drow, conditionCallback);
   }
 
   moveToCellCoord(dcol, drow, conditionCallback = null) {
@@ -57,9 +53,10 @@ class ClientGameObject extends MovableObject {
       this.cell = newCell;
       newCell.addGameObject(this);
 
+      this.moveTo(newCell.x, newCell.y, true, 200);
+
       // const { x, y, width, height } = newCell;
       // Object.assign(this, { x, y, width, height });
-      this.moveTo(newCell.x, newCell.y, true, 200);
     }
   }
 
@@ -74,13 +71,7 @@ class ClientGameObject extends MovableObject {
   getCurrentFrame(time) {
     const state = this.spriteCfg.states[this.state];
     const lengthFrame = state.frames.length;
-    const animate = animateEx(
-      lengthFrame,
-      this.animationStartTime,
-      time,
-      state.duration,
-      true,
-    );
+    const animate = animateEx(lengthFrame, this.animationStartTime, time, state.duration, true);
     const frame = ((lengthFrame + animate.offset) | 0) % lengthFrame;
 
     return state.frames[frame];
@@ -90,20 +81,13 @@ class ClientGameObject extends MovableObject {
     super.render(time);
 
     const { x, y, width, height, world } = this;
-    const engine = world.engine;
+    const { engine } = world;
 
-    const { sprite, frame, states, type } = this.spriteCfg;
+    const { sprite, frame, type } = this.spriteCfg;
 
     const spriteFrame = type === 'static' ? frame : this.getCurrentFrame(time);
 
-    engine.renderSpriteFrame({
-      sprite,
-      frame: spriteFrame,
-      x,
-      y,
-      w: width,
-      h: height,
-    });
+    engine.renderSpriteFrame({ sprite, frame: spriteFrame, x, y, w: width, h: height });
   }
 
   detouch() {
