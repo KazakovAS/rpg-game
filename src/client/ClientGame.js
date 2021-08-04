@@ -12,17 +12,19 @@ class ClientGame {
       gameObjects,
       player: null,
     });
+
     this.engine = this.createEngine();
-    this.map = this.createWorld();
+    this.world = this.createWorld();
     this.initEngine();
   }
 
   setPlayer(player) {
     this.player = player;
+    this.player.playerName = this.cfg.playerName;
   }
 
   createEngine() {
-    return new ClientEngine(document.getElementById(this.cfg.tagId), this);
+    return new ClientEngine(document.getElementById(this.cfg.tagID), this);
   }
 
   createWorld() {
@@ -30,15 +32,15 @@ class ClientGame {
   }
 
   getWorld() {
-    return this.map;
+    return this.world;
   }
 
   initEngine() {
     this.engine.loadSprites(sprites).then(() => {
-      this.map.init();
+      this.world.init();
       this.engine.on('render', (_, time) => {
         this.engine.camera.focusAtGameObject(this.player);
-        this.map.render(time);
+        this.world.render(time);
       });
       this.engine.start();
       this.initKeys();
@@ -65,11 +67,13 @@ class ClientGame {
     const { player } = this;
 
     if (player && player.motionProgress === 1) {
-      const canMovie = player.moveByCellCoord(dirs[dir][0], dirs[dir][1], (cell) => {
-        return cell.findObjectsByType('grass').length;
-      });
+      const canMove = player.moveByCellCoord(
+        dirs[dir][0],
+        dirs[dir][1],
+        (cell) => cell.findObjectsByType('grass').length,
+      );
 
-      if (canMovie) {
+      if (canMove) {
         player.setState(dir);
         player.once('motion-stopped', () => player.setState('main'));
       }
@@ -79,7 +83,6 @@ class ClientGame {
   static init(cfg) {
     if (!ClientGame.game) {
       ClientGame.game = new ClientGame(cfg);
-      console.log('Game INIT!');
     }
   }
 }
